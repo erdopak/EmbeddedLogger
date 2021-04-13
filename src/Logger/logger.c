@@ -1,6 +1,8 @@
 
 #define LOGGER
+#include <string.h>
 #include "config.h"
+#include "logger.h"
 
 // Holds current index of the parameter buffer
 static unsigned int dataPointer = 0;
@@ -15,7 +17,7 @@ static unsigned int isRestarted = 0;
 // log serie to avoid collision
 static unsigned int safePointer =  DATA_BUFFER_SIZE;
 
-LOG_STATUS log(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize)
+LOG_STATUS LOG(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize)
 {
     LOG_STATUS retVal = LOG_WRITE_FAILED;
 

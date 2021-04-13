@@ -18,7 +18,7 @@ typedef enum LOG_LEVEL
  */
 typedef enum LOG_CODE
 {
-    LOG = 0
+    EXAMPLE_LOG = 0
 }LOG_CODE;
 
 typedef enum LOG_STATUS
@@ -34,7 +34,7 @@ typedef enum LOG_STATUS
  * @param level: Priority of the log
  * 
  */
-LOG_STATUS log(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize);
+LOG_STATUS LOG(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize);
 
 void flushLogs();
 
