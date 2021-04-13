@@ -111,3 +111,8 @@ int writeMemory(void* data, int dataSize)
 
     return retAddress;
 }
+
+void flushLogs()
+{
+    memset(logArray, 0, sizeof(LOG_RECORD) * MAX_LOG_COUNT);
+}

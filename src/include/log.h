@@ -36,4 +36,6 @@ typedef enum LOG_STATUS
  */
 LOG_STATUS log(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize);
 
+void flushLogs();
+
 #endif //LOG_H
