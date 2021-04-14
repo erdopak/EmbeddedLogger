@@ -1,20 +1,30 @@
-
-#define LOGGER
 #include <string.h>
 #include "config.h"
 #include "logger.h"
 
-// Holds current index of the parameter buffer
+/**
+ * @brief 
+ * Current index of the parameter buffer 
+ */
 static unsigned int dataPointer = 0;
 
-// Holds the lates index of the log entry array
+/**
+ * @brief 
+ * Holds the latest index of the log entry array 
+ */
 static unsigned int logCounter = 0;
 
-// Since there are two buffers, datapointer should know counter is restarted so it can overwrite
-static unsigned int isRestarted = 0;
+/**
+ * @brief 
+ * Datapointer should know counter is restarted so it can overwrite.
+ */
+static unsigned int isRestarted = 0; 
 
-// In case of logCounter restarted, safe pointer holds the latest previous data pointer 
-// log serie to avoid collision
+/**
+ * @brief 
+ * In case of logCounter restarted, safe pointer holds the latest previous data pointer 
+ * log serie to avoid collision
+ */
 static unsigned int safePointer =  DATA_BUFFER_SIZE;
 
 LOG_STATUS LOG(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize)
@@ -48,7 +58,7 @@ LOG_STATUS LOG(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int 
     return retVal;
 }
 
-void memcheck(int dataSize)
+void memLocate(int dataSize)
 {
     int currentCounter = logCounter;
     int cumulativeSize = 0;
@@ -92,7 +102,7 @@ int writeMemory(void* data, int dataSize)
     {
         if(dataSize < safePointer)
         {
-            memcheck(dataSize);
+            memLocate(dataSize);
             memcpy(&dataBuffer[dataPointer], data, dataSize);
 
             //data pointer restart
