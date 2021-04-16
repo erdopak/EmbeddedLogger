@@ -2,13 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 include(ExternalProject)
 
-add_library(EmbeddedLogger)
-
-target_sources(EmbeddedLogger
-    PRIVATE
-       logger.c
-    PUBLIC
-        ${HEADER_LIST}    
+add_library(EmbeddedLogger STATIC
+    logger.c
 )
 
 target_include_directories(EmbeddedLogger
