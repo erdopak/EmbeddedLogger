@@ -14,7 +14,7 @@
  * @brief
  * MAX_LOG_COUNT defines entire system log buffer size
  */
-#define MAX_LOG_COUNT 5000
+#define MAX_LOG_COUNT 1000
 
 /**
  * @brief
