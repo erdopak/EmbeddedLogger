@@ -38,14 +38,15 @@ typedef enum LOG_CODE
 typedef enum LOG_STATUS
 {
     LOG_WRITE_FAILED = 0,
-    LOG_WRITE_SUCCES = 1,
-    LOG_WRITTEN_DATA_FAILED = 2,
+    LOG_WRITE_SUCCESS = 1,
+    LOG_WRITE_DATA_FAILED = 2,
     LOG_OVERWRITTEN = 3
 }LOG_STATUS;
 
 /**
  * @brief 
  * LOG function stores the momentarily states.
+ * Function name specifically left upper case to comply on log standards
  * @param level: Priority of the log
  * @param code: Log message enumeration
  * @param time: epoch time

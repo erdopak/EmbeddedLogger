@@ -37,19 +37,19 @@ LOG_STATUS LOG(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int 
         logArray[logCounter].time = time;
         logArray[logCounter].dataPointer = writeMemory(data, dataSize);
         logArray[logCounter].dataSize = dataSize;
-        logCounter++;
         if(logArray[logCounter].dataPointer == -1)
         {
-            retVal = LOG_WRITTEN_DATA_FAILED;
+            retVal = LOG_WRITE_DATA_FAILED;
         }
         else
         {
-            retVal = LOG_WRITE_SUCCES;
+            retVal = LOG_WRITE_SUCCESS;
         }
+        logCounter++;
     }
     else if (IS_RING_BUFFER)
     {
-        safePointer = logArray[logCounter].dataPointer;
+        safePointer = logArray[logCounter-1].dataPointer;
         isRestarted = 1;
         logCounter = 0;
         retVal = LOG_OVERWRITTEN;
@@ -126,5 +126,6 @@ int writeMemory(void* data, int dataSize)
 
 void flushLogs()
 {
+    logCounter = 0;
     memset(logArray, 0, sizeof(LOG_RECORD) * MAX_LOG_COUNT);
 }
