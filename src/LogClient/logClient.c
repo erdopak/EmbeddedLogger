@@ -1,30 +1,45 @@
 #include <string.h>
 #include "logClient.h"
 
-#define LOCAL_BUFFER_SIZE       800     //In bytes
-#define MID_TERMINATOR_SIZE     2       //In bytes
-#define LAST_TERMINATOR_SIZE    4       //In bytes
+/**
+ * @brief 
+ * Size of log buffer of bytes
+ */
+#define LOCAL_BUFFER_SIZE       800
 
-unsigned char dataBuffer[LOCAL_BUFFER_SIZE];
-static unsigned int dataPointer = 0;
-static char terminator[] = { '#', '#', '#', '#'};
+/**
+ * @brief 
+ * First 4 bytes are reserved for log count.
+ * Rest is heap style log buffer.
+ */
+unsigned char dataBuffer[LOCAL_BUFFER_SIZE] = {0};
+
+/**
+ * @brief 
+ * Count of log this value will be copied to beginning of the databuffer just before transfering.
+ */
+static int logCounter = 0;
+
+/**
+ * @brief 
+ * Pointer to the first free index of the data buffer
+ */
+static unsigned int dataPointer = sizeof(int);
+
+/**
+ * @brief 
+ * Constant variables kept to avoid run time calculations
+ */
 const static int levelSize = sizeof(LOG_LEVEL);
 const static int logCodeSize = sizeof(LOG_CODE);
 const static int timeStampSize = sizeof(TIME_STAMP);
 const static int logHeaderSize = sizeof(LOG_LEVEL) + sizeof(LOG_CODE) 
-                                        + sizeof(TIME_STAMP) + LAST_TERMINATOR_SIZE;
+                                        + sizeof(TIME_STAMP);
 
 void addLog(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize)
 {
     if(dataPointer + (logHeaderSize + dataSize) < LOCAL_BUFFER_SIZE)
     {
-        // The previous log was last one but it will be trimmed by MID_TERMINATOR_SIZE
-        // now new log became last
-        if(dataPointer >= MID_TERMINATOR_SIZE)
-        {
-            dataPointer -= MID_TERMINATOR_SIZE;
-        }
-
         //copy the log level
         memcpy(&dataBuffer[dataPointer], &level, levelSize);
         dataPointer += levelSize;
@@ -47,15 +62,14 @@ void addLog(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dat
             memcpy(&dataBuffer[dataPointer], &data, dataSize);
             dataPointer += dataSize;
         }
-
-        //copy log terminator
-        memcpy(&dataBuffer[dataPointer], terminator, LAST_TERMINATOR_SIZE);
-        dataPointer += LAST_TERMINATOR_SIZE;
+        logCounter++;
     }
 }
 
 unsigned char* transferLogs()
 {
-    dataPointer = 0;
+    dataPointer = sizeof(int);
+    *(int*)dataBuffer = logCounter;
+    logCounter = 0;
     return dataBuffer; 
 } 
