@@ -124,6 +124,35 @@ int writeMemory(void* data, int dataSize)
     return retAddress;
 }
 
+void readBulkLogs(unsigned char* data)
+{
+    int logCounter = *(int*)data;
+    int bufferPointer = sizeof(int);
+    void *logLevel, *logCode, *timeStamp, *dataSize;
+
+    for(int i = 0; i < logCounter; i++)
+    {
+        logLevel = &data[bufferPointer];
+        bufferPointer += sizeof(LOG_LEVEL);
+        logCode = &data[bufferPointer];
+        bufferPointer += sizeof(LOG_CODE);
+        timeStamp = &data[bufferPointer];
+        bufferPointer += sizeof(LOG_CODE);
+        dataSize = &data[bufferPointer];
+        bufferPointer += sizeof(int);
+        
+        LOG(
+            *(LOG_LEVEL*)logLevel,
+            *(LOG_CODE*)logCode,
+            *(TIME_STAMP*)timeStamp,
+            &data[bufferPointer],
+            *(int*)dataSize
+        );
+
+        bufferPointer += *(int*)dataSize;
+    }
+}
+
 void flushLogs()
 {
     logCounter = 0;
