@@ -36,7 +36,7 @@ const static int timeStampSize = sizeof(TIME_STAMP);
 const static int logHeaderSize = sizeof(LOG_LEVEL) + sizeof(LOG_CODE) 
                                         + sizeof(TIME_STAMP);
 
-void addLog(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize)
+LOG_STATUS LOG(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dataSize)
 {
     if(dataPointer + (logHeaderSize + dataSize) < LOCAL_BUFFER_SIZE)
     {
@@ -63,7 +63,10 @@ void addLog(LOG_LEVEL level, LOG_CODE code, TIME_STAMP time, void* data, int dat
             dataPointer += dataSize;
         }
         logCounter++;
+
+        return LOG_WRITE_SUCCESS;
     }
+    return LOG_WRITE_DATA_FAILED;
 }
 
 unsigned char* transferLogs()
