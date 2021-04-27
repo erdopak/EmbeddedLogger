@@ -5,11 +5,6 @@ extern "C"
     #include "log.h"
 }
 
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
 
 TEST(TEST_SUITE, WriteSuccesLogTest)
 {
@@ -63,7 +58,7 @@ TEST(TEST_SUITE, OverwrittenLogTest)
 {
     flushLogs();
     int i;
-    for(i = 0; i < 1000; i++)
+    for (i = 0; i < 1000; i++)
     {
         LOG(TRACE, EXAMPLE_LOG, (TIME_STAMP)0, &i, sizeof(int));
     }
