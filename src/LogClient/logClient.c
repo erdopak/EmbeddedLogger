@@ -76,3 +76,9 @@ unsigned char* transferLogs()
     logCounter = 0;
     return dataBuffer; 
 } 
+
+void flushLogs()
+{
+    logCounter = 0;
+    *(int*)dataBuffer = logCounter;
+}

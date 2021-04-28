@@ -9,4 +9,5 @@ add_library(LogClient STATIC
 target_include_directories(LogClient
     PUBLIC
         ../../include/
+        ./
 )
